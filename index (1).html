@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class Period Info</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      text-align: center;
+      padding: 2em;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+    .card {
+      background: white;
+      padding: 2em;
+      margin: auto;
+      max-width: 500px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      border-radius: 16px;
+    }
+    h1 {
+      color: #005b96;
+    }
+    .detail {
+      margin: 1em 0;
+      font-size: 1.2em;
+    }
+    .time {
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Current Class Info</h1>
+    <div id="info" class="detail">Loading...</div>
+    <div class="time" id="time"></div>
+  </div>
+
+  <script>
+    const timetable = {
+      1: ["Cryptography", "DBMS Lab", "Cryptography", "S/W Engg", "DBMS", "Project M.S"],
+      2: ["S/W Project Mgmt", "DBMS", "Cryptography", "S/W Project Mgmt", "S/W Engg", "Value Edu"],
+      3: ["Cryptography", "S/W Engg", "DBMS", "Project M.S", "DBMS Lab", "S/W Project R.N System"],
+      4: ["DBMS", "S/W Engg", "Project R.S", "DBMS", "Value Edu", ""],
+      5: ["DBMS", "S/W Engg", "Project M.P", "Project N.S", "Value Edu", ""]
+    };
+
+    const times = [
+      [570, 630], [630, 690], [690, 750], [810, 870], [870, 930], [930, 990]
+    ];
+
+    const timeLabels = [
+      "9:30 AM - 10:30 AM",
+      "10:30 AM - 11:30 AM",
+      "11:30 AM - 12:30 PM",
+      "1:30 PM - 2:30 PM",
+      "2:30 PM - 3:30 PM",
+      "3:30 PM - 4:30 PM"
+    ];
+
+    function getCurrentClassInfo() {
+      const now = new Date();
+      const day = now.getDay();
+      const hours = now.getHours();
+      const minutes = now.getMinutes();
+      const total = hours * 60 + minutes;
+
+      const infoDiv = document.getElementById("info");
+      const timeDiv = document.getElementById("time");
+
+      if (day < 1 || day > 5) {
+        infoDiv.innerText = "No classes scheduled today.";
+        return;
+      }
+
+      const schedule = timetable[day];
+      for (let i = 0; i < times.length; i++) {
+        const [start, end] = times[i];
+        if (total >= start && total < end) {
+          const subject = schedule[i] || "Free Period";
+          infoDiv.innerHTML = `
+            <strong>Course:</strong> III B.Sc. Computer Science<br>
+            <strong>Year:</strong> 3rd Year<br>
+            <strong>Subject:</strong> ${subject}<br>
+            <strong>Staff:</strong> To be updated
+          `;
+          timeDiv.innerText = timeLabels[i];
+          return;
+        }
+      }
+
+      infoDiv.innerText = "No class is going on at this time.";
+    }
+
+    getCurrentClassInfo();
+  </script>
+</body>
+</html>
